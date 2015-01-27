@@ -21,6 +21,9 @@ game.PlayerEntity = me.Entity.extend({
 		}]);
 		/*sets speed 5 units to the right*/
 		this.body.setVelocity(5, 20);
+
+		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+
 		this.renderable.addAnimation("idle", [78]);
 
 		this.renderable.addAnimation("walk", [117, 118,119,120, 121, 122, 123, 124, 125], 80);
@@ -79,7 +82,7 @@ game.PlayerBaseEntity = me.Entity.extend({
 			spritewidth:"100",
 			/*sprite height passes the main information tells us the width of the image*/
 			spriteheight: "100",
-/*function creates new shape*/
+	/*function creates new shape*/
 			getShape: function(){
 				/*returns new shape: rectangle*/ /*turns rectangle to polygon*/
 				return (new me.Rect(0, 0, 100, 100)).toPolygon();
@@ -93,15 +96,21 @@ game.PlayerBaseEntity = me.Entity.extend({
 		this.alwaysUpdate = true;
 		/*if someone runs into a tower they dont go through, it will be able to collide withone another*/
 		this.body.onCollision = this.onCollision.bind(this);
+		console.log("init");
 		/*uses different type for other collisions to check and what your running into when hittng other things*/
-		this.type= "PlayerBaseEntity";
+		this.type = "PlayerBaseEntity";
+
+		this.renderable.addAnimation("idle", [0]);
+		this.renderable.addAnimation("broken", [1]);
+		this.renderable.setCurrentAnimation("idle");
 	},
 
-	update: function() {
+	update: function(delta) {
 		/*checks whether health is equal to of lower than 0*/
 		if (this.health <= 0) {
 			/*if it is player dies*/
 			this.broken = true;
+			this.renderable.setCurrentAnimation("broken");
 		}
 		this.body.update(delta);
 
@@ -129,7 +138,7 @@ game.EnemyBaseEntity = me.Entity.extend({
 			spritewidth:"100",
 			/*sprite height passes the main information tells us the width of the image*/
 			spriteheight: "100",
-			/*function creates new shape*/
+/*function creates new shape*/
 			getShape: function(){
 				/*returns new shape: rectangle*/ /*turns rectangle to polygon*/
 				return (new me.Rect(0, 0, 100, 100)).toPolygon();
@@ -143,11 +152,12 @@ game.EnemyBaseEntity = me.Entity.extend({
 		this.alwaysUpdate = true;
 		/*if someone runs into a tower they dont go through, it will be able to collide withone another*/
 		this.body.onCollision = this.onCollision.bind(this);
+		console.log(init);
 		/*uses different type for other collisions to check and what your running into when hittng other things*/
-		this.type= "PlayerBaseEntity";
+		this.type = "EnemyBaseEntity";
 	},
 
-	update: function() {
+	update: function(delta) {
 		/*checks whether health is equal to of lower than 0*/
 		if (this.health <= 0) {
 			/*if it is player dies*/
@@ -160,6 +170,6 @@ game.EnemyBaseEntity = me.Entity.extend({
 	},
 
 	onCollision: function() {
-		
+
 	}
 });
