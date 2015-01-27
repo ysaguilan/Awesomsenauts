@@ -9,7 +9,7 @@ game.resources = [
 	 {name:"background-tiles", type:"image", src:"data/img/background-tiles.png"},
 	 {name:"meta-tiles", type:"image", src:"data/img/meta-tiles.png"},
 	 {name:"orc", type:"image", src:"data/img/orcSpear.png"},
-
+	 {name:"tower", type:"image", src:"data/img/tower_rounds.svg.png"},
 	/* Atlases 
 	 * @example
 	 * {name: "example_tps", type: "tps", src: "data/img/example_tps.json"},

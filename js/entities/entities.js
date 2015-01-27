@@ -12,7 +12,7 @@ game.PlayerEntity = me.Entity.extend({
 			/*sprite width passes the main information tells us the width of the image*/
 			spritewidth: "64",
 			/*sprite height tells us the height of the image*/
-			sprieheight: "64",
+			spriteheight: "64",
 			/*function creates new shape*/
 			getShape: function() {
 				/*returns new shape: rectangle*/ /*turns rectangle to polygon*/
@@ -61,5 +61,105 @@ game.PlayerEntity = me.Entity.extend({
 		this.body.update(delta);
 		this._super(me.Entity, "update", [delta]);
 		return true;
+	}
+});
+
+game.PlayerBaseEntity = me.Entity.extend({
+	/*constructor function; asks for three parameters*/
+	int: function (x, y, settings) {
+		/*reaches into the constructor of entity*/
+		this._super(me.Entity, 'init', [x, y, {
+			/*calls image given the name of tower*/
+			image: "tower",
+			/*gives width of image; tells screen to preserve the amount of space given*/
+			width: 100,
+			/*gives the height of image; tells screen to preserve the amount of space given*/
+			height: 100,
+			/*sprite width passes the main information tells us the width of the image*/
+			spritewidth:"100",
+			/*sprite height passes the main information tells us the width of the image*/
+			spriteheight: "100",
+/*function creates new shape*/
+			getShape: function(){
+				/*returns new shape: rectangle*/ /*turns rectangle to polygon*/
+				return (new me.Rect(0, 0, 100, 100)).toPolygon();
+			}
+		}]);
+		/*variable that hold whether the player has died or not*/
+		this.broken = false;
+		/*variable that holds health*/
+		this.health = 10;
+		/*upadates what happends to tower even whe not visible*/
+		this.alwaysUpdate = true;
+		/*if someone runs into a tower they dont go through, it will be able to collide withone another*/
+		this.body.onCollision = this.onCollision.bind(this);
+		/*uses different type for other collisions to check and what your running into when hittng other things*/
+		this.type= "PlayerBaseEntity";
+	},
+
+	update: function() {
+		/*checks whether health is equal to of lower than 0*/
+		if (this.health <= 0) {
+			/*if it is player dies*/
+			this.broken = true;
+		}
+		this.body.update(delta);
+
+		this._super(me.Entity, "update", [delta]);
+		return true;
+	},
+
+	onCollision: function() {
+
+	}
+});
+
+game.EnemyBaseEntity = me.Entity.extend({
+	/*constructor function; asks for three parameters*/
+	int: function (x, y, settings) {
+		/*reaches into the constructor of entity*/
+		this._super(me.Entity, 'init', [x, y, {
+			/*calls image given the name of tower*/
+			image: "tower",
+			/*gives width of image; tells screen to preserve the amount of space given*/
+			width: 100,
+			/*gives the height of image; tells screen to preserve the amount of space given*/
+			height: 100,
+			/*sprite width passes the main information tells us the width of the image*/
+			spritewidth:"100",
+			/*sprite height passes the main information tells us the width of the image*/
+			spriteheight: "100",
+			/*function creates new shape*/
+			getShape: function(){
+				/*returns new shape: rectangle*/ /*turns rectangle to polygon*/
+				return (new me.Rect(0, 0, 100, 100)).toPolygon();
+			}
+		}]);
+		/*variable that hold whether the player has died or not*/
+		this.broken = false;
+		/*variable that holds health*/
+		this.health = 10;
+		/*upadates what happends to tower even whe not visible*/
+		this.alwaysUpdate = true;
+		/*if someone runs into a tower they dont go through, it will be able to collide withone another*/
+		this.body.onCollision = this.onCollision.bind(this);
+		/*uses different type for other collisions to check and what your running into when hittng other things*/
+		this.type= "PlayerBaseEntity";
+	},
+
+	update: function() {
+		/*checks whether health is equal to of lower than 0*/
+		if (this.health <= 0) {
+			/*if it is player dies*/
+			this.broken = true;
+		}
+		this.body.update(delta);
+
+		this._super(me.Entity, "update", [delta]);
+		return true;
+	},
+
+	onCollision: function() {
+		
 	}
 });
