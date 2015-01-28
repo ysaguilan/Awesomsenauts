@@ -25,8 +25,8 @@ game.PlayerEntity = me.Entity.extend({
 		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
 		this.renderable.addAnimation("idle", [78]);
-
-		this.renderable.addAnimation("walk", [117, 118,119,120, 121, 122, 123, 124, 125], 80);
+		this.renderable.addAnimation("walk", [117, 118,119,120, 121, 122, 123, 124, 125], 60);
+		this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 71, 72,], 80);
 
 		this.renderable.setCurrentAnimation("idle");
 	},
@@ -53,13 +53,34 @@ game.PlayerEntity = me.Entity.extend({
 			/*brings to velocity down to 0 when key isnt pressed*/
 			this.body.vel.x = 0;
 		}
-		if (this.body.vel.x !== 0) {
+		if (me.input.isKeyPressed("attack")) {
+		if (!this.renderable.isCurrentAnimation("attack")) {
+			console.log(this.renderable.setCurrentAnimation("attack"));
+			/*sets the current animation to attack and once its over
+			returns to idle*/
+			this.renderable.setCurrentAnimation("attack", "idle");
+			/*makes so that the next time we start this sequence we can begin from the first animation,
+			not where we left off when we switch to another animation*/
+		}
+	}
+
+	else if (this.body.vel.x !== 0) {
 		if (!this.renderable.isCurrentAnimation("walk")) {
 			this.renderable.setCurrentAnimation("walk");
 		}
 	}
 	else{
 		this.renderable.setCurrentAnimation("idle");
+	}
+	if (me.input.isKeyPressed("attack")) {
+		if (!this.renderable.isCurrentAnimation("attack")) {
+			console.log(this.renderable.setCurrentAnimation("attack"));
+			/*sets the current animation to attack and once its over
+			returns to idle*/
+			this.renderable.setCurrentAnimation("attack", "idle");
+			/*makes so that the next time we start this sequence we can begin from the first animation,
+			not where we left off when we switch to another animation*/
+		}
 	}
 		this.body.update(delta);
 		this._super(me.Entity, "update", [delta]);
@@ -99,8 +120,11 @@ game.PlayerBaseEntity = me.Entity.extend({
 		/*uses different type for other collisions to check and what your running into when hittng other things*/
 		this.type = "PlayerBaseEntity";
 
+		/*animation for when base is fine*/
 		this.renderable.addAnimation("idle", [0]);
+		/*animation for when base is broken*/
 		this.renderable.addAnimation("broken", [1]);
+		/*sets current animation to idle*/
 		this.renderable.setCurrentAnimation("idle");
 	},
 
@@ -154,8 +178,11 @@ game.EnemyBaseEntity = me.Entity.extend({
 		/*uses different type for other collisions to check and what your running into when hittng other things*/
 		this.type = "EnemyBaseEntity";
 
+			/*animation for when base is fine*/
 		this.renderable.addAnimation("idle", [0]);
+		/*animation for when base is broken*/
 		this.renderable.addAnimation("broken", [1]);
+		/*sets current animation to idle*/
 		this.renderable.setCurrentAnimation("idle");
 	},
 
