@@ -53,6 +53,12 @@ game.PlayerEntity = me.Entity.extend({
 			/*brings to velocity down to 0 when key isnt pressed*/
 			this.body.vel.x = 0;
 		}
+
+		 if (me.input.isKeyPressed("jump") && !this.jumping && !this.falling) {
+		 	this.jumping = true;
+			this.body.vel.y -= this.body.accel.y * me.timer.tick;
+		}
+
 		if (me.input.isKeyPressed("attack")) {
 		if (!this.renderable.isCurrentAnimation("attack")) {
 			console.log(this.renderable.setCurrentAnimation("attack"));
