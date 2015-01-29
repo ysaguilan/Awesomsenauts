@@ -108,11 +108,17 @@ game.PlayerEntity = me.Entity.extend({
 			var xdif = this.pos.x - response.b.pos.x;
 
 			console.log("xdif" + xdif + " ydif " + ydif);
-
-			if (xdif>-35 && this.facing==='right' && (xdif<0)) {
+			/*checks if player has made contact to the top ofr enemy base if it has then player wont go throught the top*/
+			if (ydif<-40 && xdif<70 && xdif>-35) {
+				this.body.falling = false;
+				this.body.vel.y = -1;
+			}
+			/*wont allow player go through the right side of enemy base*/
+			else if (xdif>-35 && this.facing==='right' && (xdif<0) && ydif>-50) {
 				this.body.vel.x = 0;
 				this.pos.x = this.pos.x -1;
 			}
+			/*wont allow player go through the left side of enemy base*/
 			else if (xdif<70 && this.facing==='left' && (xdif>0)) {
 				this.body.vel.x = 0; 
 				this.pos.x = this.pos.x +1;
