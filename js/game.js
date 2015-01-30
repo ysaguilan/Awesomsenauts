@@ -41,6 +41,7 @@ var game = {
 	"loaded" : function () {
 		/*adds orc player to pool*/ /*true allows us to make many instances of the class*/
 		me.pool.register("orc", game.PlayerEntity, true);
+		me.pool.register("creep1", game.EnemyCreep, true);
 		me.pool.register("PlayerBase", game.PlayerBaseEntity);
 		me.pool.register("EnemyBase", game.EnemyBaseEntity);
 		
