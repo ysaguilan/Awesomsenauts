@@ -11,8 +11,9 @@ game.PlayScreen = me.ScreenObject.extend({
 		var player = me.pool.pull("orc", 0, 420, {});
 		/*adds player to world*/
 		me.game.world.addChild(player, 5);
-
+		/*variable that stores GameManager; placed at 0,0 cause it doesn't matter where it's placed*/
 		var gamemanager = me.pool.pull("GameManager", 0, 0, {});
+		/*adds the variable gamemanager to game/screen*/
 		me.game.world.addChild(gamemanager, 0); 
 
 		/*binds the right key for player movement right*/
