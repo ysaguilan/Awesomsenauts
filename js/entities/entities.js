@@ -283,12 +283,14 @@ game.EnemyCreep = me.Entity.extend({
 	},
 
 	update: function(delta){
+		/*adds to the position of x by the velocity defined above in setVelocity() and multiplying it by me.timer.tick
+			me.timer.tick makes the movement look smooth*/
 		this.body.vel.x -= this.body.accel.x * me.timer.tick;
-
+		/*updates body to time*/
 		this.body.update(delta);
-
+		/*reaches into the constructor of entity*/
 		this._super(me.Entity, "update", [delta]);
-
+		/*returns true (makes everything defined in update function happen)*/
 		return true;
 	}
 });
