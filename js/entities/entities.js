@@ -281,6 +281,16 @@ game.EnemyCreep = me.Entity.extend({
 		/*sets walk animation*/
 		this.renderable.setCurrentAnimation("walk");
 	},
+
+	update: function(delta){
+		this.body.vel.x -= this.body.accel.x * me.timer.tick;
+
+		this.body.update(delta);
+
+		this._super(me.Entity, "update", [delta]);
+
+		return true;
+	}
 });
 
 /*runs all the timers and occurances that happened that are not really inside of the PlayerEntity, BaseEntities, or EnemyCreep Entites 
