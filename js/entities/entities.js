@@ -155,7 +155,7 @@ game.PlayerBaseEntity = me.Entity.extend({
 		/*if someone runs into a tower they dont go through, it will be able to collide withone another*/
 		this.body.onCollision = this.onCollision.bind(this);
 		/*uses different type for other collisions to check and what your running into when hittng other things*/
-		this.type = "PlayerBaseEntity";
+		this.type = "PlayerBase";
 
 		/*animation for when base is fine*/
 		this.renderable.addAnimation("idle", [0]);
@@ -178,6 +178,9 @@ game.PlayerBaseEntity = me.Entity.extend({
 		return true;
 	},
 
+	loseHealth: function(damage) {
+		this.health = this.health-damage;
+	},
 	onCollision: function() {
 
 	}
@@ -272,6 +275,14 @@ game.EnemyCreep = me.Entity.extend({
 		this.health = 10;
 		/*always updates enemy checks for changes*/
 		this.alwaysUpdate = true;
+		/*this.attacking lets us knowif the enemy is currently attacking*/
+		this.attacking = false;
+		/*keeps track of when our creep last attacked anything*/
+		this.lastAttacking = new Date().getTime();
+		/*keeps track of when our creep last hit anything*/
+		this.lastHit = new Date().getTime();
+
+		this.now = new Date().getTime();
 		/*sets enemy creep velocity x = 3, y = 20*/
 		this.body.setVelocity(3, 20);
 		/*this class type is enemy creep*/
@@ -281,8 +292,13 @@ game.EnemyCreep = me.Entity.extend({
 		/*sets walk animation*/
 		this.renderable.setCurrentAnimation("walk");
 	},
+	
 
 	update: function(delta){
+
+		this.now = new Date().getTime();
+
+		me.collision.check(this, true, this.collideHandler.bind(this), true);
 		/*adds to the position of x by the velocity defined above in setVelocity() and multiplying it by me.timer.tick
 			me.timer.tick makes the movement look smooth*/
 		this.body.vel.x -= this.body.accel.x * me.timer.tick;
@@ -292,6 +308,23 @@ game.EnemyCreep = me.Entity.extend({
 		this._super(me.Entity, "update", [delta]);
 		/*returns true (makes everything defined in update function happen)*/
 		return true;
+	},
+
+	collideHandler: function(response){
+
+
+
+		if (response.b.type ==='PlayerBase') {
+			this.attacking = true;
+			this.lastAttacking = this.now;
+			this.body.vel.x = 0;
+			this.pos.x = this.pos.x + 1;
+			if ((this.now-this.lastHit >=1000)) {
+				this.lastHit = this.now;
+				response.b.loseHealth(1);
+
+			}
+		}
 	}
 });
 
@@ -323,6 +356,7 @@ game.GameManager = Object.extend ({
 			/*adds var creepe */
 			me.game.world.addChild(creepe, 5);
 		}
+
 		/*returns all of this to true*/
 		return true;
 	}
