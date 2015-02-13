@@ -19,6 +19,7 @@ game.PlayerEntity = me.Entity.extend({
 				return(new me.Rect(0, 0, 64, 64)).toPolygon();
 			}
 		}]);
+		this.type = "PlayerEntity";
 		/*sets speed 5 units to the right*/
 		this.body.setVelocity(5, 20);
 		/*keeps track of direction your character is going*/
@@ -93,6 +94,10 @@ game.PlayerEntity = me.Entity.extend({
 
 		this._super(me.Entity, "update", [delta]);
 		return true;
+	},
+
+	loseHealth: function(damage) {
+		this.health = this.health - damage;
 	},
 
 	collideHandler: function(response) {
@@ -252,6 +257,9 @@ game.EnemyBaseEntity = me.Entity.extend({
 
 
 game.EnemyCreep = me.Entity.extend({
+
+		//this.facing = "left";
+
 	/*constructor function; asks for three parameters*/
 	init: function(x, y, settings) {
 		this._super(me.Entity, 'init', [x, y, {
@@ -312,6 +320,31 @@ game.EnemyCreep = me.Entity.extend({
 
 	collideHandler: function(response){
 
+		//if (response.b.type ==='PlayerBaseEntity') {
+		//	var ydif = this.pos.y  + response.b.pos.y;
+		//	var xdif = this.pos.x + response.b.pos.x;
+
+		//	console.log("xdif" + xdif + " ydif " + ydif);
+			/*checks if player has made contact to the top ofr enemy base if it has then player wont go throught the top*/
+		//	if (ydif<-40 && xdif<70 && xdif>-35) {
+		//		this.body.falling = false;
+		//		this.body.vel.y = -1;
+		//	}
+			/*wont allow player go through the right side of enemy base*/
+		//	else if (xdif>-35 && this.facing==='left' && (xdif<0) && ydif>-50) {
+		//		this.body.vel.x = 0;
+		//		this.pos.x = this.pos.x -1;
+		//	}
+			/*wont allow player go through the left side of enemy base*/
+		//	else if (xdif<70 && this.facing==='right' && (xdif>0)) {
+		//		this.body.vel.x = 0; 
+		//		this.pos.x = this.pos.x +1;
+		//	}
+
+		//if (this.body.onCollision && !this.body.jumping && !this.body.falling) {
+		 	//this.body.jumping = true;
+			//this.body.vel.y -= this.body.accel.y * me.timer.tick;
+		}
 
 
 		if (response.b.type ==='PlayerBase') {
@@ -321,6 +354,19 @@ game.EnemyCreep = me.Entity.extend({
 			this.pos.x = this.pos.x + 1;
 			if ((this.now-this.lastHit >=1000)) {
 				this.lastHit = this.now;
+				response.b.loseHealth(1);
+
+			}
+		}
+		else if (response.b.type==='PlayerEntity') {
+			var xdif = this.pos.x - response.b.pos.x;
+			this.attacking = true;
+			this.lastAttacking = this.now;
+			this.body.vel.x = 0;
+			this.pos.x = this.pos.x + 1;
+			if ((this.now-this.lastHit >=1000)) {
+				this.lastHit = this.now;
+				/*makes the player call its loseHealth and passes it a damage of one*/
 				response.b.loseHealth(1);
 
 			}
