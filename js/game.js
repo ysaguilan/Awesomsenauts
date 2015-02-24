@@ -15,7 +15,7 @@ var game = {
 		orcBaseDamage: 10,
 		orcBaseHealth: 100,
 		orcBaseSpeed: 3,
-		orcBaseDefense: 0,
+		orcBaseDefense: 0, 
 		playerAttackTimer: 1000,
 		creepAttackTimer: 1000,
 		playerMoveSpeed: 5,
@@ -62,10 +62,9 @@ var game = {
 		me.pool.register("EnemyBase", game.EnemyBaseEntity);
 		me.pool.register("GameManager", game.GameManager);
 		
-		me.state.set(me.state.MENU, new game.TitleScreen());
-		me.state.set(me.state.PLAY, new game.PlayScreen());
+		//me.state.set(me.state.MENU, new game.TitleScreen());
 
 		// Start the game.
-		me.state.change(me.state.PLAY);
+		me.state.change(me.state.MENU);
 	}
 };

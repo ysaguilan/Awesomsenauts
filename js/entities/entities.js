@@ -348,18 +348,18 @@ game.EnemyCreep = me.Entity.extend({
 
 	update: function(delta){
 		
-		
+		this.now = new Date().getTime();
+
 		console.log(this.health);
 		if (this.health <= 0) {
 			me.game.world.removeChild(this);
 		}
 
-		this.now = new Date().getTime();
-
-		me.collision.check(this, true, this.collideHandler.bind(this), true);
+		
 		/*adds to the position of x by the velocity defined above in setVelocity() and multiplying it by me.timer.tick
 			me.timer.tick makes the movement look smooth*/
 		this.body.vel.x -= this.body.accel.x * me.timer.tick;
+		me.collision.check(this, true, this.collideHandler.bind(this), true);
 		/*updates body to time*/
 		this.body.update(delta);
 		/*reaches into the constructor of entity*/
@@ -391,29 +391,29 @@ game.EnemyCreep = me.Entity.extend({
 
 		if (response.b.type ==='PlayerBase') {
 			this.attacking = true;
-			//this.lastAttacking = this.now;
+			this.lastAttacking = this.now;
 			this.body.vel.x = 0;
 			//keeps moving creep to the right to maintain position
 			this.pos.x = this.pos.x + 1;
 			if ((this.now-this.lastHit >=1000)) {
 				this.lastHit = this.now;
-				response.b.loseHealth(game.data.enemyCreepAttack);
+				response.b.loseHealth(1);
 
 			}
 		}
-		else if (response.b.type==='PlayerEntity') {
-			var xdif = this.pos.x - response.b.pos.x;
-			this.attacking = true;
-			this.lastAttacking = this.now;
-			this.body.vel.x = 0;
-			this.pos.x = this.pos.x + 1;
-			if ((this.now-this.lastHit >=1000)) {
-				this.lastHit = this.now;
-				/*makes the player call its loseHealth and passes it a damage of one*/
-				response.b.loseHealth(game.data.enemyCreepAttack);
-
-			}
-		}
+		//else if (response.b.type==='PlayerEntity') {
+		//	var xdif = this.pos.x - response.b.pos.x;
+		//	this.attacking = true;
+		//	this.lastAttacking = this.now;
+		//	this.body.vel.x = 0;
+		//	this.pos.x = this.pos.x + 1;
+		///	if ((this.now-this.lastHit >=1000)) {
+		//		this.lastHit = this.now;
+		//		/*makes the player call its loseHealth and passes it a damage of one*/
+		//		response.b.loseHealth(game.data.enemyCreepAttack);
+//
+//			}
+//		}
 	}
 });
 
