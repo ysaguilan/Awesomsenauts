@@ -7,10 +7,9 @@ game.PlayScreen = me.ScreenObject.extend({
 		game.data.score = 0;
 
 		me.levelDirector.loadLevel("level01");
-		/*stores a pulled instance of the player*/
-		var player = me.pool.pull("orc", 0, 420, {});
-		/*adds player to world*/
-		me.game.world.addChild(player, 5);
+
+		this.resetPlayer(0, 420);
+
 		/*variable that stores GameManager; placed at 0,0 cause it doesn't matter where it's placed*/
 		var gamemanager = me.pool.pull("GameManager", 0, 0, {});
 		/*adds the variable gamemanager to game/screen*/
@@ -33,5 +32,12 @@ game.PlayScreen = me.ScreenObject.extend({
 	onDestroyEvent: function() {
 		// remove the HUD from the game world
 		me.game.world.removeChild(this.HUD);
-	}
+	},
+	
+		resetPlayer: function(x, y){
+		/*stores a pulled instance of the player*/
+		game.data.player = me.pool.pull("orc", x, y, {});
+		/*adds player to world*/
+		me.game.world.addChild(game.data.player, 5);
+		}
 });

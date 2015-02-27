@@ -14,18 +14,18 @@ game.TitleScreen = me.ScreenObject.extend({
 			this.font = new me.Font("Arial", 46, "white");
 		},
 
-		draw: function(renderer) {
+	draw: function(renderer) {
 			this.font.draw(renderer.getContext(), "Awsomenauts", 450, 130);
 			this.font.draw(renderer.getContext(), "Press Enter", 250, 530);
-		},
+	},
 
 	})));
 
 	this.handler = me.event.subscribe(me.event.KEYDOWN, function(action, keyCode, edge) {
-		if (action === "start") {
+	if (action === "start") {
 			me.state.change(me.state.PLAY);
-		}
-		});
+			}
+		})
 	},
 	
 	
@@ -34,6 +34,6 @@ game.TitleScreen = me.ScreenObject.extend({
 	 */
 	onDestroyEvent: function() {
 		 me.input.unbindKey(me.input.KEY.ENTER);
-		 me.event.unsubcribe(this.handler);
+		 me.event.unsubscribe(this.handler);
 	}
 });
