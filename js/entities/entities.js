@@ -1,7 +1,24 @@
 game.PlayerEntity = me.Entity.extend({
 	/*constructor function; asks for three parameters*/
 	init: function(x, y, settings) {
-		/*reaches into the constructor of entity*/
+
+		this.setSuper();
+		this.setPlayerTimers();
+		this.setAttributes();
+		this.type = "PlayerEntity";
+		this.setFlags();
+
+		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+
+		this.addAnimation();
+
+
+
+		this.renderable.setCurrentAnimation("idle");
+	},
+	//sets super class
+ 	setSuper: function(){
+ 		/*reaches into the constructor of entity*/
 		this._super(me.Entity, 'init', [x, y, {
 			/*calls image given the name of orc*/
 			image: "orc",
@@ -19,26 +36,35 @@ game.PlayerEntity = me.Entity.extend({
 				return(new me.Rect(0, 0, 64, 64)).toPolygon();
 			}
 		}]);
-		this.type = "PlayerEntity";
+ 	},
+
+	setPlayerTimers: function(){
+		this.now = new Date().getTime();
+		this.lastHit = this.now;
+		this.lastAttack = new Date().getTime();//havent used this
+	},
+
+	setAttributes: function () {
 		this.health = game.data.playerHealth;
 		/*sets speed 5 units to the right*/
 		this.body.setVelocity(game.data.playerMoveSpeed, 20);
-		/*keeps track of direction your character is going*/
-		this.facing = "right";
-		this.now = new Date().getTime();
-		this.dead = false;
+		/*sets attack damage*/
 		this.attack = game.data.playerAttack;
-		this.lastHit = this.now;
-		this.lastAttack = new Date().getTime();
-		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
-
-		this.renderable.addAnimation("idle", [78]);
-		this.renderable.addAnimation("walk", [117, 118,119,120, 121, 122, 123, 124, 125], 60);
-		this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 71, 72,], 80);
-
-		this.renderable.setCurrentAnimation("idle");
 	},
 
+	setFlags: function(){
+	/*keeps track of direction your character is going*/
+	this.facing = "right";
+	/*keeps track of whether character is dead; holds value of false*/
+	this.dead = false;
+	},
+
+	addAnimation: function(){
+	this.renderable.addAnimation("idle", [78]);
+	this.renderable.addAnimation("walk", [117, 118,119,120, 121, 122, 123, 124, 125], 60);
+	this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 71, 72,], 80);
+	},
+	
 	update: function(delta){
 		this.now = new Date().getTime();
 
