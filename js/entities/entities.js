@@ -68,40 +68,9 @@ game.PlayerEntity = me.Entity.extend({
 	update: function(delta){
 		this.now = new Date().getTime();
 
-		if (this.health<=0) {
-			this.dead = true;
-			
-		}
+		this.dead = checkIfDead();
 
-		/*checks if right key has been pressed*/
-		if (me.input.isKeyPressed("right")) {
-			/*adds to the position of x by the velocity defined above in setVelocity() and multiplying it by me.timer.tick
-			me.timer.tick makes the movement look smooth*/
-			this.body.vel.x += this.body.accel.x * me.timer.tick;
-			this.facing = "right";
-			/*flips player animation to opposite direction*/
-			this.flipX(true);
-			
-		}
-		/*checks if left key has been pressed*/
-		else if(me.input.isKeyPressed("left")) {
-			this.facing = "left";
-			/*adds to the position of x by the velocity defined above in setVelocity() and multiplying it by me.timer.tick
-			me.timer.tick makes the movement look smooth*/
-			this.body.vel.x -= this.body.accel.x * me.timer.tick;
-			/*flips player animation to opposite direction from where it was flipped*/
-			this.flipX(false);
-		}
-		else{
-			/*brings to velocity down to 0 when key isnt pressed*/
-			this.body.vel.x = 0;
-		}
-		/*enables space key for jump action*//*makes double jump not possible*/
-
-		 if (me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling) {
-		 	this.body.jumping = true;
-			this.body.vel.y -= this.body.accel.y * me.timer.tick;
-		}
+		this.checkIfKeyPressesAndMove();
 
 		if (me.input.isKeyPressed("attack")) {
 		if (!this.renderable.isCurrentAnimation("attack")) {
@@ -129,6 +98,58 @@ game.PlayerEntity = me.Entity.extend({
 
 		this._super(me.Entity, "update", [delta]);
 		return true;
+	},
+
+	checkIfDead: function() {
+		if (this.health<=0) {
+		return true;	
+		}
+		return false;
+	},
+
+	checkIfKeyPressesAndMove: function() {
+		/*checks if right key has been pressed*/
+		if (me.input.isKeyPressed("right")) {
+			this.moveRight();
+		}
+		/*checks if left key has been pressed*/
+		else if(me.input.isKeyPressed("left")) {
+			this.moveLeft();
+		}
+		else{
+			/*brings to velocity down to 0 when key isnt pressed*/
+			this.body.vel.x = 0;
+		}
+		/*enables space key for jump action*//*makes double jump not possible*/
+
+		 if (me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling) {
+		 	this.jump();
+		}
+
+	},
+
+	moveRight: function(){
+	/*adds to the position of x by the velocity defined above in setVelocity() and multiplying it by me.timer.tick
+	me.timer.tick makes the movement look smooth*/
+	this.body.vel.x += this.body.accel.x * me.timer.tick;
+	this.facing = "right";
+	/*flips player animation to opposite direction*/
+	this.flipX(true);
+			
+	},
+
+	moveLeft: function() {
+	this.facing = "left";
+	/*adds to the position of x by the velocity defined above in setVelocity() and multiplying it by me.timer.tick
+	me.timer.tick makes the movement look smooth*/
+	this.body.vel.x -= this.body.accel.x * me.timer.tick;
+	/*flips player animation to opposite direction from where it was flipped*/
+	this.flipX(false);
+	},
+
+	jump: function() {
+	this.body.jumping = true;
+	this.body.vel.y -= this.body.accel.y * me.timer.tick;
 	},
 
 	loseHealth: function(damage) {
