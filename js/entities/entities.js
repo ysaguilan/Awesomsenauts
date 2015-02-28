@@ -11,9 +11,6 @@ game.PlayerEntity = me.Entity.extend({
 		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
 		this.addAnimation();
-
-
-
 		this.renderable.setCurrentAnimation("idle");
 	},
 	//sets super class
@@ -57,6 +54,8 @@ game.PlayerEntity = me.Entity.extend({
 	this.facing = "right";
 	/*keeps track of whether character is dead; holds value of false*/
 	this.dead = false;
+	/*keeps track of attack*/
+	this.attacking = false;
 	},
 
 	addAnimation: function(){
@@ -67,30 +66,10 @@ game.PlayerEntity = me.Entity.extend({
 	
 	update: function(delta){
 		this.now = new Date().getTime();
-
 		this.dead = checkIfDead();
 
 		this.checkIfKeyPressesAndMove();
-
-		if (me.input.isKeyPressed("attack")) {
-		if (!this.renderable.isCurrentAnimation("attack")) {
-			console.log(this.renderable.setCurrentAnimation("attack"));
-			/*sets the current animation to attack and once its over
-			returns to idle*/
-			this.renderable.setCurrentAnimation("attack", "idle");
-			/*makes so that the next time we start this sequence we can begin from the first animation,
-			not where we left off when we switch to another animation*/
-		}
-	}
-
-	else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) {
-		if (!this.renderable.isCurrentAnimation("walk")) {
-			this.renderable.setCurrentAnimation("walk");
-		}
-	}
-	else if (!this.renderable.isCurrentAnimation("attack")){
-		this.renderable.setCurrentAnimation("idle");
-	}
+		this.setAnimation();
 	
 
 	me.collision.check(this, true, this.collideHandler.bind(this), true);
@@ -126,6 +105,7 @@ game.PlayerEntity = me.Entity.extend({
 		 	this.jump();
 		}
 
+		this.attacking = me.input.isKeyPressed("attack");
 	},
 
 	moveRight: function(){
@@ -150,6 +130,28 @@ game.PlayerEntity = me.Entity.extend({
 	jump: function() {
 	this.body.jumping = true;
 	this.body.vel.y -= this.body.accel.y * me.timer.tick;
+	},
+
+	setAnimation: function() {
+
+	if (this.attacking) {
+		if (!this.renderable.isCurrentAnimation("attack")) {
+		console.log(this.renderable.setCurrentAnimation("attack"));
+		/*sets the current animation to attack and once its over
+		returns to idle*/
+		this.renderable.setCurrentAnimation("attack", "idle");
+		/*makes so that the next time we start this sequence we can begin from the first animation,
+		not where we left off when we switch to another animation*/
+		}
+	}
+	else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) {
+		if (!this.renderable.isCurrentAnimation("walk")) {
+			this.renderable.setCurrentAnimation("walk");
+		}
+	}
+		else if (!this.renderable.isCurrentAnimation("attack")){
+			this.renderable.setCurrentAnimation("idle");
+		}
 	},
 
 	loseHealth: function(damage) {
