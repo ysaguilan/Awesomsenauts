@@ -136,12 +136,13 @@ game.PlayerEntity = me.Entity.extend({
 
 	if (this.attacking) {
 		if (!this.renderable.isCurrentAnimation("attack")) {
-		console.log(this.renderable.setCurrentAnimation("attack"));
+		//(this.renderable.setCurrentAnimation("attack", "idle"));
 		/*sets the current animation to attack and once its over
 		returns to idle*/
 		this.renderable.setCurrentAnimation("attack", "idle");
 		/*makes so that the next time we start this sequence we can begin from the first animation,
 		not where we left off when we switch to another animation*/
+		this.renderable.setAnimationFrame();
 		}
 	}
 	else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) {
@@ -166,11 +167,7 @@ game.PlayerEntity = me.Entity.extend({
 				this.collideWithEnemyCreep(response);	
 			}
 
-				else if ( response.b.type === 'EnemyCreep') {
-					if(this.renderable.isCurrentAnimation("attack")) {
-						response.b.loseHealth(1);
-					}
-				}
+				
 			},
 
 collideWithEnemyBase: function(response) {
@@ -199,7 +196,7 @@ collideWithEnemyBase: function(response) {
 	}
 },
 
-collideWithEnemyCreep: function() {
+collideWithEnemyCreep: function(response) {
 	var xdif = this.pos.x - response.b.pos.x;
 	var ydif = this.pos.y + response.b.pos.y;
 
@@ -222,22 +219,22 @@ stopMovement: function(xdif) {
 }, 
 
 checkAttack: function(xdif, ydif) {
-	if (this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit>= game.data.playerAttackTimer && (Math.abs(ydif) <=40) && ((xdif>0) && this.facing === "left") || ((xdif<0) && this.facing === "right")) {
+	if (this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit>= game.data.playerAttackTimer && (Math.abs(ydif <=40) && ((xdif>0) && this.facing === "left") || ((xdif<0) && this.facing === "right"))) {
 		this.lastHit = this.now;
 		return true;
 	}
 	return false;
 },
 
-hitCreep: function() {
+hitCreep: function(response) {
 	//if the creeps health is less than our attack excutes code in if statement
-	if (response.b.health <=this.attack) {
+	if (response.b.health <= game.data.playerAttack) {
 		//adds one gold for a creep kill
 		game.data.gold += 1;
-		console.log("Current gold: " +game.data.gold);
+		//console.log("Current gold: " + game.data.gold);
 	}
 	response.b.loseHealth(game.data.playerAttack);
-	}	
+}	
 
 });
 
