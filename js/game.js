@@ -7,7 +7,7 @@ var game = {
 		// score
 		score : 0,
 		enemyBaseHealth: 10,
-		playerBaseHealth: 10,
+		playerBaseHealth: 100,
 		enemyCreepHealth: 10,
 		playerHealth: 10,
 		enemyCreepAttack: 1,
@@ -20,7 +20,8 @@ var game = {
 		enemyCreepAttackTimer: 1000,
 		playerMoveSpeed: 5,
 		creepMoveSpeed: 5,
-		GameManager: "",
+		gameTimerManager: "",
+		heroDeathManager: "",
 		player:"",
 		exp: 0,
 		gold: 0,
@@ -28,6 +29,7 @@ var game = {
 		exp2: 0,
 		exp3: 0,
 		exp4: 0,
+		win: "",
 	},
 	
 	
@@ -64,9 +66,11 @@ var game = {
 		/*adds orc player to pool*/ /*true allows us to make many instances of the class*/
 		me.pool.register("orc", game.PlayerEntity, true);
 		me.pool.register("EnemyCreep", game.EnemyCreep, true);
+		
 		me.pool.register("PlayerBase", game.PlayerBaseEntity);
 		me.pool.register("EnemyBase", game.EnemyBaseEntity);
-		me.pool.register("GameManager", game.GameManager);
+		me.pool.register("GameTimerManager", game.GameTimerManager);
+		me.pool.register("HeroDeathManager", game.HeroDeathManager);
 		
 		me.state.set(me.state.MENU, new game.TitleScreen());
 		me.state.set(me.state.PLAY, new game.PlayScreen());

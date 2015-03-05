@@ -1,6 +1,6 @@
 /*runs all the timers and occurances that happened that are not really inside of the PlayerEntity, BaseEntities, or EnemyCreep Entites 
 wont appear on the screen its an object*/
-game.GameManager = Object.extend ({
+game.GameTimerManager = Object.extend ({
 	/*constructor function; asks for three parameters*/
 	init: function(x, y, settings) {
 		/**/
@@ -17,10 +17,6 @@ game.GameManager = Object.extend ({
 		this.now = new Date().getTime();
 		this.goldTimerCheck();
 		this.creepTimerCheck();
-	
-
-
-
 		/*returns all of this to true*/
 		return true;
 	},
@@ -61,5 +57,21 @@ game.HeroDeathManager = Object.extend({
 		me.game.world.removeChild(game.data.player);
 		me.state.current().resetPlayer(10, 0);
 		}
+		return true;
+	}
+});
+
+game.ExperienceManager = Object.extend({
+	init: function(x, y, settings) {
+		this.alwaysUpdate = true;
 	},
+	update: function() {
+		if (game.data.win === true) {
+			game.data.exp += 10;
+		}
+		else if(game.data.win === false) {
+			game.data.exp += 1;
+		}
+	return true;
+	}
 });
