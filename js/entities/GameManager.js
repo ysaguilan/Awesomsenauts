@@ -90,3 +90,18 @@ game.ExperienceManager = Object.extend({
 		me.save.exp2 = 4;
 	}
 });
+
+game.SpendGold = Object.extend({
+	init: function(x, y, settings) {
+		this.now = new Date().getTime();
+		/*keeps track of the last time a creep has been made*/
+		this.lastBuy = new Date().getTime();
+
+		this.paused = false;
+		/*updates for changes*/
+		this.alwaysUpdate = true;
+	},
+	update: function() {
+		return true;
+	}
+});
