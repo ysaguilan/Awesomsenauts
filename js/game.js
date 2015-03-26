@@ -25,12 +25,20 @@ var game = {
 		player:"",
 		exp: 0,
 		gold: 0,
+		ability1: 0,
+		ability2: 0,
+		ability3:0,
+		skill1: 0,
+		skill2: 0,
+		skill3: 0,
 		exp1: 0,
 		exp2: 0,
 		exp3: 0,
 		exp4: 0,
 		win: "",
 		pausePos: "",
+		buyscreen:"",
+		buytext: "",
 	},
 	
 	
@@ -53,8 +61,8 @@ var game = {
 
 	//me.state.SPENDEXP = 112;
 
-	console.log(game.data.exp);
-	console.log(game.data.exp2);
+	//console.log(game.data.exp);
+	//console.log(game.data.exp2);
 
 	// Initialize the audio.
 	me.audio.init("mp3,ogg");
