@@ -174,7 +174,7 @@ collideWithEnemyBase: function(response) {
 	var ydif = this.pos.y  - response.b.pos.y;
 	var xdif = this.pos.x - response.b.pos.x;
 
-	console.log("xdif" + xdif + " ydif " + ydif);
+	//console.log("xdif" + xdif + " ydif " + ydif);
 	/*checks if player has made contact to the top ofr enemy base if it has then player wont go throught the top*/
 	if (ydif<-40 && xdif<70 && xdif>-35) {
 		this.body.falling = false;
@@ -190,7 +190,6 @@ collideWithEnemyBase: function(response) {
 	}
 
 	if (this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit>= game.data.playerAttackTimer) {
-		console.log("tower Hit");
 		this.lastHit = this.now;
 		response.b.loseHealth(game.data.playerAttack);
 	}
@@ -231,7 +230,7 @@ hitCreep: function(response) {
 	if (response.b.health <= game.data.playerAttack) {
 		//adds one gold for a creep kill
 		game.data.gold += 1;
-		//console.log("Current gold: " + game.data.gold);
+		console.log("Current gold: " + game.data.gold);
 	}
 	response.b.loseHealth(game.data.playerAttack);
 }	
