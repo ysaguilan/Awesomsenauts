@@ -5,8 +5,8 @@ game.LoadProfile = me.ScreenObject.extend({
 	onResetEvent: function() {
 
 	me.game.world.addChild(new me.Sprite(50, 50, me.loader.getImage('load-screen')), -10);
-	document.getElementById('input').style.visibility = "visible";
-	document.getElementById('load').style.visibility = "visible";
+	document.getElementById('input').style.visibility = "hidden";
+	document.getElementById('load').style.visibility = "hidden";
 
 	me.input.unbindKey(me.input.KEY.B);
 	me.input.unbindKey(me.input.KEY.Q);
@@ -26,7 +26,7 @@ game.LoadProfile = me.ScreenObject.extend({
  
 	draw: function(renderer) {
 
-		this.font.draw(renderer.getContext(), "Enter Yours Username And Password", this.pos.x, this.pos.y);
+		this.font.draw(renderer.getContext(), "Enter Your Username And Password", this.pos.x, this.pos.y);
 
 	},
 
